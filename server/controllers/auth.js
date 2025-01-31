@@ -57,10 +57,12 @@ export const login = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ msg: "Invalid credentials" });
     }
-    const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY);
+    const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    });
     delete user.password;
     res.status(200).json({ token, user });
   } catch (err) {
-    rex.status(401).json({ err: err.message });
+    res.status(401).json({ err: err.message });
   }
 };

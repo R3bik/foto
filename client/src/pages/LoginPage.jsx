@@ -23,20 +23,17 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/login-user",
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axios.post("http://localhost:3001/auth/login", {
+        email,
+        password,
+      });
       const token = response.data.token;
 
       localStorage.setItem("authToken", token, response.data);
       console.log(response.data.user.role);
 
       toast.success(response.data.message || "Logged in successfully!");
-      navigate("/");
+      navigate("/home");
     } catch (err) {
       if (err.response) {
         // If the server responded with an error
@@ -60,7 +57,11 @@ const Login = () => {
     <div className="flex items-center justify-center min-h-screen overflow-hidden">
       <div className="flex items-center justify-between ">
         <div className=" hidden md:flex  min-h-screen ">
-          <img src={login} alt="" className=" object-fit w-full min-h-screen" />
+          <img
+            src={login}
+            alt=""
+            className=" object-cover w-full min-h-screen"
+          />
         </div>
         <form
           onSubmit={handleSubmit}
