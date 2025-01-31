@@ -7,7 +7,10 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setLogin } from "../state";
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
   const [password, setPassword] = useState("");
@@ -28,11 +31,16 @@ const Login = () => {
         password,
       });
       const token = response.data.token;
-
-      localStorage.setItem("authToken", token, response.data);
-      console.log(response.data.user.role);
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
 
       toast.success(response.data.message || "Logged in successfully!");
+      dispatch(
+        setLogin({
+          user: response.data.user,
+          token: token,
+        })
+      );
       navigate("/home");
     } catch (err) {
       if (err.response) {
