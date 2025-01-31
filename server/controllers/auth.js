@@ -16,6 +16,11 @@ export const register = async (req, res) => {
       occupation,
     } = req.body;
 
+    const user = await User.findOne({ email: email });
+    if (user) {
+      return res.status(409).json("User already exist!");
+    }
+
     const salt = await bcrypt.genSalt();
 
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -32,6 +37,7 @@ export const register = async (req, res) => {
       viewedProfile: Math.floor(Math.random() * 10000),
       impressions: Math.floor(Math.random() * 10000),
     });
+
     const savedUser = await newUser.save();
     res.status(201).json(savedUser);
   } catch (err) {
