@@ -70,7 +70,7 @@ const Login = () => {
             <div className="pb-4 flex flex-col items-center justify-center border-b">
               <Link
                 to="/"
-                className="text-4xl font-bold text-green-400 font-playWright cursor-pointer"
+                className="text-4xl font-bold text-green-400 font-pacifico cursor-pointer"
               >
                 Foto
               </Link>
