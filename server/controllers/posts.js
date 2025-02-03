@@ -4,8 +4,14 @@ import User from "../models/User.js";
 // Creating posts
 export const createPosts = async (req, res) => {
   try {
-    const { userId, picturePath, description } = req.body;
+    const { userId, description } = req.body;
+    const imageUrl = req.file ? `assets/${req.file.filename}` : null;
+    // Fetch user from the database
     const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
     const newPost = new Post({
       userId,
       firstName: user.firstName,
@@ -13,7 +19,7 @@ export const createPosts = async (req, res) => {
       location: user.location,
       description,
       userPicturePath: user.picturePath,
-      picturePath,
+      picturePath: imageUrl,
       likes: {},
       comments: [],
     });

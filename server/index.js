@@ -14,6 +14,7 @@ import postRoutes from "./routes/post.js";
 import { register } from "./controllers/auth.js";
 import { verifyToken } from "./middleware/auth.js";
 import { createPosts } from "./controllers/posts.js";
+import fs from "fs";
 
 // CONFIGURATIONS
 
@@ -35,7 +36,11 @@ app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 // FILE STORING
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/assets");
+    const dir = "public/assets";
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true }); // Creates the folder if it doesn't exist
+    }
+    cb(null, dir);
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);

@@ -19,25 +19,36 @@ const CreatePost = () => {
   const [picturePath, setPicturePath] = useState("");
   const handlesubmit = async () => {
     try {
+      const formData = new FormData();
+      formData.append("userId", userId._id);
+      formData.append("description", description);
+      if (picturePath) {
+        formData.append("picture", picturePath); // Append file correctly
+      }
+
       const response = await axios.post(
         "http://localhost:3001/posts",
-        {
-          userId,
-          description,
-          picturePath,
-        },
+        formData,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Include token in request
+            Authorization: `Bearer ${token}`, // Include token
+            "Content-Type": "multipart/form-data", // Important for file upload
           },
         }
       );
+
       toast.success("Posted!");
       setDescription("");
+      setPicturePath(""); // Reset image
+      setTimeout(() => {
+        window.location.reload(); // This will reload the page after the delay
+      }, 2000);
     } catch (err) {
       console.log(err);
+      toast.error("Failed to post");
     }
   };
+  const image = userId.picturePath;
 
   return (
     <div className="w-full">
@@ -46,7 +57,7 @@ const CreatePost = () => {
           <div className="flex gap-4 items-center ">
             <div className="">
               <img
-                src="https://images.unsplash.com/photo-1548802673-380ab8ebc7b7?w=500&auto=format&fit=crop&q=60"
+                src={`http://localhost:3001/${image}`}
                 alt="profile"
                 className="w-16 h-16 rounded-full object-cover"
               />
@@ -68,9 +79,7 @@ const CreatePost = () => {
                 {/* <ImageDropzone /> */}
                 <Inputbox
                   type="file"
-                  onChange={(e) => {
-                    setPicturePath(e.target.value);
-                  }}
+                  onChange={(e) => setPicturePath(e.target.files[0])}
                 />
               </div>
             </div>

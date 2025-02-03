@@ -32,13 +32,18 @@ const UserWidget = () => {
     getUser();
   }, []);
 
+  if (!userInfo) {
+    return <div>Loading...</div>; // Display loading message while fetching data
+  }
+  const image = userInfo.picturePath;
+
   return (
     <div className="w-full flex items-center justify-center">
       <div className="flex flex-col justify-start bg-black p-6 shadow-lg rounded-lg w-[360px] space-y-4">
         <div className="flex items-center justify-between border-b-[1px] pb-4 border-gray-500">
           <div className="flex items-center gap-2">
             <img
-              src="https://images.unsplash.com/photo-1548802673-380ab8ebc7b7?w=500&auto=format&fit=crop&q=60"
+              src={`http://localhost:3001/${image}`}
               alt="Profile"
               className="w-16 h-16 rounded-full object-cover"
             />

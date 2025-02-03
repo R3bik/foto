@@ -13,42 +13,52 @@ const SignupPage = () => {
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
   const [password, setPassword] = useState("");
-  const [picturePath, setPicturePath] = useState("");
-
+  const [picturePath, setPicturePath] = useState(null); // Store file, not path
   const [email, setEmail] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent page reload
+    e.preventDefault();
     if (!firstName || !lastName || !password || !email) {
       toast.error("Please fill in required fields!");
       return;
     }
     try {
-      const response = await axios.post("http://localhost:3001/auth/register", {
-        firstName,
-        lastName,
-        email,
-        password,
-        picturePath,
-      });
+      const formData = new FormData();
+      formData.append("firstName", firstName);
+      formData.append("lastName", lastName);
+      formData.append("email", email);
+      formData.append("password", password);
+      if (picturePath) {
+        formData.append("picture", picturePath); // Send file here
+      }
+
+      const response = await axios.post(
+        "http://localhost:3001/auth/register",
+        formData, // Send FormData as the request body
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Ensure this header is set for file upload
+          },
+        }
+      );
 
       toast.success("Account created successfully!");
       setfirstName("");
       setlastName("");
       setEmail("");
       setPassword("");
-      setPicturePath("");
+      setPicturePath(null);
       navigate("/");
     } catch (err) {
       if (err.response.status === 409) {
-        toast.error(err.response.data.message || "User already exist");
+        toast.error(err.response.data.message || "User already exists");
       } else {
         console.error("Error creating account", err);
-
         toast.error("Something went wrong!");
       }
     }
   };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -103,11 +113,8 @@ const SignupPage = () => {
                 holder="Enter your Password"
                 onChange={(e) => setPassword(e.target.value)}
               />
-
               <span
-                onClick={() => {
-                  setVisible(!visible);
-                }}
+                onClick={() => setVisible(!visible)}
                 className="absolute right-2 top-3 transform text-lg cursor-pointer text-gray-500 hover:text-gray-700"
               >
                 {visible ? <FaEyeSlash /> : <FaEye />}
@@ -120,7 +127,7 @@ const SignupPage = () => {
               id="profile"
               type="file"
               onChange={(e) => {
-                setPicturePath(e.target.value);
+                setPicturePath(e.target.files[0]); // Store the file object, not path
               }}
             />
           </div>

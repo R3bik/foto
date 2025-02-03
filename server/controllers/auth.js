@@ -10,11 +10,11 @@ export const register = async (req, res) => {
       lastName,
       email,
       password,
-      picturePath,
       friends,
       location,
       occupation,
     } = req.body;
+    const imageUrl = req.file ? `assets/${req.file.filename}` : null;
 
     const user = await User.findOne({ email: email });
     if (user) {
@@ -30,7 +30,7 @@ export const register = async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
-      picturePath,
+      picturePath: imageUrl,
       friends,
       location,
       occupation,

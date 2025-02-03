@@ -24,7 +24,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className="font-roboto bg-[#0F0F0F] text-white min-h-full">
+    <div className="font-roboto bg-[#0F0F0F] text-white min-h-full overflow-hidden ">
       <BrowserRouter>
         <Routes>
           <Route
