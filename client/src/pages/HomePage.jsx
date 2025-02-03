@@ -48,6 +48,7 @@ const HomePage = () => {
                   location={post.location}
                   postuserId={post.userId}
                   image={post.picturePath}
+                  userImage={post.userPicturePath}
                 />
               ))
             ) : (

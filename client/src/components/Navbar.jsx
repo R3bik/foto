@@ -8,7 +8,7 @@ import { MdLogout } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import { setLogout } from "../state";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 const Navbar = () => {
   const user = useSelector((state) => state.auth.user);
@@ -25,7 +25,11 @@ const Navbar = () => {
     <div className="p-4 sm:px-10 sm:py-4 shadow-lg bg-black">
       <div className="flex items-center justify-between">
         <div className="">
-          <h1 className=" font-pacifico text-green-500 text-3xl">Foto</h1>
+          <Link to="/home">
+            <h1 className=" font-pacifico text-green-500 text-3xl cursor-pointer">
+              Foto
+            </h1>
+          </Link>
         </div>
 
         <div className="relative sm:flex items-center hidden gap-3">
@@ -51,10 +55,12 @@ const Navbar = () => {
                   {/* Check user before using */}
                 </h3>
                 <div className="flex flex-col items-start gap-2 p-2">
-                  <span className="hover:text-green-500 transition-all duration-200 flex items-center gap-1">
-                    <IoPerson />
-                    Profile
-                  </span>
+                  <Link to="/profilepage">
+                    <span className="hover:text-green-500 transition-all duration-200 flex items-center gap-1">
+                      <IoPerson />
+                      Profile
+                    </span>
+                  </Link>
                   <span
                     className="hover:text-red-500 transition-all duration-200 flex items-center gap-1"
                     onClick={handleLogOut}

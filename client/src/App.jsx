@@ -5,6 +5,7 @@ import Signup from "./screens/Signup";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setLogin } from "./state";
+import ProfilePage from "./screens/ProfilePage";
 
 function App() {
   const tokenFromRedux = useSelector((state) => state.auth?.token);
@@ -38,6 +39,10 @@ function App() {
           <Route
             path="/home"
             element={isAuth ? <Home /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/profilepage"
+            element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
           />
         </Routes>
       </BrowserRouter>

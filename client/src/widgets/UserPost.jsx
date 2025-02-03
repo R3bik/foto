@@ -1,43 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { MdOutlinePersonPin, MdOutlineWork } from "react-icons/md";
-import { FaLinkedin, FaLocationDot, FaSquareXTwitter } from "react-icons/fa6";
-import axios from "axios";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import React from "react";
 
-const UserWidget = () => {
-  const [userInfo, setUserInfo] = useState(null);
-  const user = useSelector((state) => state.auth?.user);
-  const userId = JSON.parse(localStorage.getItem("user"));
-
-  const token = localStorage.getItem("authToken");
-
-  const getUser = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3001/user/${userId._id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Include token in request
-          },
-        }
-      );
-      const data = response.data;
-      setUserInfo(response.data);
-    } catch (err) {
-      console.error("Error fetching user:", err);
-    }
-  };
-
-  useEffect(() => {
-    getUser();
-  }, []);
-
-  if (!userInfo) {
-    return <div>Loading...</div>; // Display loading message while fetching data
-  }
-  const image = userInfo.picturePath;
-
+const UserPost = ({ fullname, description, location, image, postuserId }) => {
   return (
     <div className="w-full flex items-center justify-center">
       <div className="flex flex-col justify-start bg-black p-6 shadow-lg rounded-lg w-[360px] space-y-4">
@@ -112,4 +75,4 @@ const UserWidget = () => {
   );
 };
 
-export default UserWidget;
+export default UserPost;
