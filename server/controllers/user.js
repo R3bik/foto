@@ -64,3 +64,33 @@ export const addRemoveFriends = async (req, res) => {
     res.status(402).json({ err: err.message });
   }
 };
+
+// updating user
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { occupation, location } = req.body;
+    const imageUrl = req.file ? `assets/${req.file.filename}` : undefined;
+
+    // Find existing user
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found!" });
+    }
+
+    // Only update provided fields
+    const updatedUserData = {
+      occupation: occupation || user.occupation,
+      location: location || user.location,
+      picturePath: imageUrl || user.picturePath,
+    };
+
+    const updatedUser = await User.findByIdAndUpdate(id, updatedUserData, {
+      new: true,
+    });
+
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(500).json({ msg: "Failed to update user!", error: err.message });
+  }
+};

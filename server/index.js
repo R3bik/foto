@@ -15,6 +15,7 @@ import { register } from "./controllers/auth.js";
 import { verifyToken } from "./middleware/auth.js";
 import { createPosts } from "./controllers/posts.js";
 import fs from "fs";
+import { updateUser } from "./controllers/user.js";
 
 // CONFIGURATIONS
 
@@ -52,6 +53,7 @@ const upload = multer({ storage });
 // Routes that require upload with files
 app.post("/auth/register", upload.single("picture"), register);
 app.post("/posts", verifyToken, upload.single("picture"), createPosts);
+app.patch("/update/:id", verifyToken, upload.single("picture"), updateUser);
 
 // normal routes
 app.use("/auth", authRoutes);

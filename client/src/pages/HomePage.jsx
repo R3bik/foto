@@ -8,6 +8,9 @@ import Friends from "../widgets/Friends";
 const HomePage = () => {
   const [posts, setPosts] = useState([]);
   const token = localStorage.getItem("authToken");
+  const [user, setUser] = useState("");
+  const userInfo = JSON.parse(localStorage.getItem("user"));
+  const userId = userInfo._id;
 
   const getPosts = async () => {
     try {
@@ -22,11 +25,25 @@ const HomePage = () => {
       console.error("Error fetching posts:", err);
     }
   };
-
+  const getUser = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/user/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include token in request
+        },
+      });
+      const data = response.data;
+      setUser(response.data);
+    } catch (err) {
+      console.error("Error fetching user:", err);
+    }
+  };
   useEffect(() => {
+    getUser();
     getPosts();
   }, []);
-
+  console.log;
+  const image = user.picturePath;
   return (
     <div className="flex justify-center items-center mx-10 py-8">
       <div className="flex justify-between w-full">
@@ -48,7 +65,7 @@ const HomePage = () => {
                   location={post.location}
                   postuserId={post.userId}
                   image={post.picturePath}
-                  userImage={post.userPicturePath}
+                  userImage={image}
                 />
               ))
             ) : (

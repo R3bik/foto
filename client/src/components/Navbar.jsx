@@ -33,7 +33,7 @@ const Navbar = () => {
         </div>
 
         <div className="relative sm:flex items-center hidden gap-3">
-          <Inputbox className="min-w-[390px]" holder="Search for posts...." />
+          <Inputbox className="min-w-[390px]" holder="Search for people..." />
           <IoIosSearch className="text-2xl absolute right-1" />
         </div>
         <div className="flex items-center gap-3">
